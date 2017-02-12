@@ -1,0 +1,11 @@
+commit 009e282f398729dd8e9d9fec42a8dceffe26cb25
+Author: andrey <2baditsme@gmail.com>
+Date:   Sun Feb 12 20:34:25 2017 +0300
+
+    add status.txt
+
+commit 7cec6ebeaf1307def313ff69c155fc3e217abd45
+Author: andrey <2baditsme@gmail.com>
+Date:   Sun Feb 12 20:08:25 2017 +0300
+
+    .gitignore
