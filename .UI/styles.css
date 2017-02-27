@@ -1,0 +1,135 @@
+<style type="text/css">
+        body {
+          margin: 0;
+        }
+        .div{
+            overflow: hidden;
+        }
+        .heading{
+            position: relative;
+            background: #404040;
+            height: 108px;
+            width: 100%;
+            color: black;
+        
+        }
+        .logo{
+            position: relative;
+            top: 18px;
+            left: 85px; 
+
+            height: 72px;
+            width: 270px;
+            font-size: 300%;
+            text-align: center;
+            display: table-cell;
+            vertical-align: middle;
+            font-family: "magrabold",sans-serif;
+
+            background: #808080;
+      
+        }
+        .loginButton{
+
+            position: absolute;
+            top: 28px;
+            right: 72px;
+
+            height: 54px;
+            width: 168px;
+
+            background-image: url("buttons//login.png");
+        }
+
+        .welcomeText{
+            font-size: 200%;
+            position: absolute;
+            font-style: italic;
+            font-weight: bold;
+            color: white;
+            right: 250px;
+            top: 36px;
+
+            
+            text-align: right;
+        }
+        .background{
+
+            background-image: url("buttons//background.png");
+            height: 1200px;
+            width: 1920px;
+
+        }
+
+        .floatingBox{
+            position: relative;
+            display: inline-block;
+            width: 400px;
+            height: 400px;
+            margin: 10px;
+            border: 2px solid black;
+            text-align: center;
+            background-image: url("buttons//preview.png");
+
+        }
+        .column{
+            position: absolute;
+            width: 25%;
+            right: 0;            
+            background-image: url("buttons//actioncenter.png");
+            background-repeat: repeat-y;
+            height: 1200px;
+        }
+
+        .nextPage{
+            position: absolute;
+            width: 76px;
+            height: 53px;
+            background-image: url("buttons//next.png");
+            right: 10px;
+            top: 20px;
+            margin: 10;
+        }
+        .previousPage{
+            position: absolute;
+            width: 76px;
+            height: 53px;
+            background-image: url("buttons//previous.png");
+            left: 10px;
+            top: 20px;
+        }
+
+        .infoBox{
+            position: absolute;
+            width: 330px;
+            height: 594px;
+            right: 3%;
+            top: 306px;
+            background-image: url("buttons//infobox.png");
+        }
+
+        html,
+        body {
+          height: 70%;
+        }
+        .wrapper {
+          display: flex;
+          flex-direction: column;
+          height: 70%;
+        }
+        .content {
+          flex: 1 0 auto;
+        }
+        .footer {
+          flex: 0 0 auto;
+          background-color: grey;
+          color: white;
+          text-align: center;
+          height: 25%;
+        }
+
+
+        
+
+
+    </style>
