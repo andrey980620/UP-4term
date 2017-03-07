@@ -206,7 +206,7 @@ function filterByParam(arts, filterConfig) {
 function addTag(id, tag) {
     for (var i = 0; i < articles.length; i++) {
         if (articles[i].id == id)
-            if (tagsList.indexOf(tag != -1) && articles[i].tags.indexOf(tag) == -1) {
+            if ((tagsList.indexOf(tag) != -1) && (articles[i].tags.indexOf(tag) == -1)) {
                 articles[i].tags.splice(0, 0, tag);
                 return true;
             }
@@ -253,6 +253,7 @@ function getArticle(id) {
         if (articles[i].id == id)
             return articles[i];
     }
+    return false;
 }
 function validateArticle(article) {
     if (article.id == null || typeof(article.id) != "string")
@@ -323,7 +324,7 @@ function removeArticle(id) {
     return false;
 }
 
-console.log("NORMAL TEST");
+console.log("NORMAL TESTS:");
 console.log("Get first 5 articles, filter: Tag, Спорт");
 var sorted = getArticles(0, 5, {filterType: "Tag", param: "Спорт"});
 for (var i = 0; i < sorted.length; i++) {
@@ -359,3 +360,16 @@ console.log(getArticle("ADD").tags);
 console.log("Remove tag from ADD article:");
 console.log(removeTag("ADD", "Полезно знать"));
 console.log(getArticle("ADD").tags);
+
+console.log("NON VALID TESTS:");
+
+console.log("addTag(ADD,NewTag)")
+console.log(addTag("ADD","NewTag"));
+
+console.log("Try to edit with too long title");
+console.log(editArticle('1', {title:"aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa"}));
+
+console.log("Try to add bad article");
+console.log(addArticle({
+    id: "Only id"
+}));
