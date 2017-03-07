@@ -283,7 +283,9 @@ function validateArticle(article) {
     return true;
 }
 function addArticle(article) {
-    if (validateArticle(article)) {
+    if (validateArticle(article)){ 
+        for(var i = 0; i < articles.length; i++)
+            if(articles[i].id == article.id) return false;
         articles.splice(0, 0, article);
         return true;
     } else return false;
