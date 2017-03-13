@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8">
     <title>Test Page</title>
-    <LINK REL=StyleSheet HREF="styles.css" TYPE="text/css" MEDIA=screen>
+    <link REL=StyleSheet HREF="styles.css" TYPE="text/css" MEDIA=screen>
 
 </head>
 <body>
@@ -12,32 +13,31 @@
     <div class="loginButton"></div>
 
 </div>
+
 <div class="wrapper">
     <div class="content">
-     
-
         <div class="infoBox">info box</div>
-        <div style="width: 75%;">
-            <div class="floatingBox">News</div>
-            <div class="floatingBox">News</div>
-            <div class="floatingBox">News</div>
-            <div class="floatingBox">News</div>
-            <div class="floatingBox">News</div>
-            <div class="floatingBox">News</div>
+
+        <div id="news-field" style="width: 75%; background-color: #2d2d39;">
         </div>
 
         <div style="width: 70%;height: 200px;position: relative;">
             <div class="previousPage"></div>
             <div class="nextPage"></div>
         </div>
-
-
-
-
-
     </div>
     <div class="footer">Footer</div>
-
 </div>
+
+    <div class="prototypes">
+        <div id="news-box" class="news-box">
+            <div class="date"></div>
+            <div class="topic"></div>
+            <div class="summary"></div>
+            <div class="author"></div>
+        </div>
+    </div>
+
+<script src="script.js"></script>
 </body>
 </html>
