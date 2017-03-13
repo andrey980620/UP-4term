@@ -1,3 +1,4 @@
+var user ='Ivan Ivanov';
 var tagsList = ["Полезно знать", "Финансы", "Политика", "Спорт", "Развлечения"];
 var articles = [
     {
@@ -389,6 +390,9 @@ var domFunctions = (function () {
     };
 
 })();
+document.getElementById('welcome').innerHTML="Hello, "+user;
+
+
 domFunctions.newsFirstLoad();
 
 domFunctions.addNewsBox({

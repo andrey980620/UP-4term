@@ -2,10 +2,12 @@
 body {
     margin: 0;
 }
-.div{
+
+.div {
     overflow: hidden;
 }
-.heading{
+
+.heading {
     position: relative;
     background: #7e7996;
     height: 108px;
@@ -13,7 +15,8 @@ body {
     color: black;
 
 }
-.logo{
+
+.logo {
     position: relative;
     top: 18px;
     left: 85px;
@@ -24,14 +27,13 @@ body {
     text-align: center;
     display: table-cell;
     vertical-align: middle;
-    font-family: "magrabold",sans-serif;
+    font-family: "magrabold", sans-serif;
 
     background: #b1a8bd;
 
 }
 
-
-.loginButton{
+.loginButton {
 
     position: absolute;
     top: 28px;
@@ -43,7 +45,7 @@ body {
     background-image: url("buttons//login.png");
 }
 
-.welcomeText{
+.welcomeText {
     font-size: 200%;
     position: absolute;
     font-style: italic;
@@ -52,10 +54,10 @@ body {
     right: 250px;
     top: 36px;
 
-
     text-align: right;
 }
-.background{
+
+.background {
 
     background-image: url("buttons//background.png");
     height: 1200px;
@@ -63,11 +65,11 @@ body {
 
 }
 
-.prototypes{
+.prototypes {
     display: none;
 }
 
-.news-box{
+.news-box {
     position: relative;
     display: inline-block;
     width: 400px;
@@ -78,57 +80,63 @@ body {
     background-image: url("buttons//preview.png");
 
 }
-        /**/
-            .date{
-                width: 100%;
-                height: 55%;
-                font-size: 15px;
-            }
 
-            .topic {
-                width: 100%;
-                height:25%;
-                text-align: left;
-                font-weight: bold;
-                font-size: 30px;
-            }
-
-
-            .summary {
-                text-align: left;
-                font-size: 16px;
-                font-style: italic;
-                width: 100%;
-            }
-
-            .author{
-                position: absolute;
-                bottom: 0px;
-                width: 100%;
-                text-align: right;
-                font-style: italic;
-                font-weight: bold;
-            }
-        /**/
-.column{
-    position: absolute;
-    width: 25%;
-    right: 0;
-    background-image: url("buttons//actioncenter.png");
-    background-repeat: repeat-y;
-    height: 1200px;
+/**/
+.date {
+    width: 100%;
+    height: 55%;
+    font-size: 15px;
 }
 
-.nextPage{
+.topic {
+    width: 100%;
+    height: 25%;
+    text-align: left;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.summary {
+    text-align: left;
+    font-size: 16px;
+    font-style: italic;
+    width: 100%;
+}
+
+.author {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    text-align: right;
+    font-style: italic;
+    font-weight: bold;
+}
+
+/**/
+.action-centre {
+    position: absolute;
+    width: 25%;
+    right: 0px;
+
+}
+.button-news-manage{
+    position: relative;
+    margin: auto;
+    margin-top: 20px;
+    height: 102px;
+    width: 102px;
+}
+
+.nextPage {
     position: absolute;
     width: 76px;
     height: 53px;
     background-image: url("buttons//next.png");
     right: 10px;
     top: 20px;
-    margin: 10;
 }
-.previousPage{
+
+.previousPage {
     position: absolute;
     width: 76px;
     height: 53px;
@@ -137,12 +145,13 @@ body {
     top: 20px;
 }
 
-.infoBox{
-    position: absolute;
+
+.infoBox {
+    margin: auto;
+    margin-top: 20px;
+    position: relative;
     width: 330px;
     height: 594px;
-    right: 3%;
-    top: 306px;
     background-image: url("buttons//infobox.png");
 }
 
@@ -150,14 +159,17 @@ html,
 body {
     height: 70%;
 }
+
 .wrapper {
     display: flex;
     flex-direction: column;
     height: 70%;
 }
+
 .content {
     flex: 1 0 auto;
 }
+
 .footer {
     flex: 0 0 auto;
     background-color: grey;
@@ -165,9 +177,5 @@ body {
     text-align: center;
     height: 25%;
 }
-
-
-
-
 
 </style>
