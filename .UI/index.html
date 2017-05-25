@@ -10,12 +10,12 @@
 <div class="heading">
     <div id="welcome" class="welcomeText"></div>
     <div class="logo">LOGO</div>
-    <div class="loginButton"></div>
+    <div id="login-button" class="loginButton"></div>
 
 </div>
 
-<div class="wrapper">
-    <div class="content">
+<div id="wrapper" class="wrapper">
+    <div class="content" id="content">
         <div class="action-centre">
             <div class="button-news-manage" style="background-image: url('buttons//save.png');"></div>
             <div class="button-news-manage" style="background-image: url('buttons//edit.png');"></div>
@@ -23,26 +23,52 @@
             <div class="infoBox"></div>
         </div>
 
-        <div id="news-field" style="width: 75%; background-color: #2d2d39;">
+        <div id="news-field" style="width: 75%; background-color: #2d2d39; text-align:center;">
         </div>
+        <!--<div class="full" id="full-view"></div>-->
 
         <div style="width: 70%;height: 200px;position: relative;">
-            <div class="previousPage"></div>
-            <div class="nextPage"></div>
+            <div id="test-pagination" class="nextPage"></div>
         </div>
     </div>
     <div class="footer">Footer</div>
 </div>
 
-    <div class="prototypes">
-        <div id="news-box" class="news-box">
-            <div class="date"></div>
-            <div class="topic"></div>
-            <div class="summary"></div>
-            <div class="author"></div>
-        </div>
+<div class="prototypes">
+    <div id="news-box" class="news-box">
+        <div class="date"></div>
+        <div class="topic"></div>
+        <div class="summary"></div>
+        <div class="author"></div>
     </div>
 
+    <div id="login-window" class="login-window">
+        <div class="login-window-header">
+            <h1 class="login-window-title">Авторизация</h1>
+        </div>
+        <div class="login-window-input">
+            <input class="login-input" type="text" placeholder="Логин">
+            <input class="pass-input" type="password" placeholder="Пароль">
+        </div>
+        <button class="login-window-enter-button" ><a href="#">Войти</a></button>
+    </div>
+
+    <div id="full-view" class="login-window">
+        <div class="date-full"></div>
+        <div class="topic-full"></div>
+        <div class="summary-full"></div>
+        <div class="author-full"></div>
+    </div>
+
+    <div id="full-edit" class="login-window">
+        <div class="date-full"></div>
+        <input class="topic-full"/>
+        <input class="summary-full"/>
+        <div class="author-full"></div>
+    </div>
+
+</div>
 <script src="script.js"></script>
+<script src="clickHandler.js"></script>
 </body>
 </html>

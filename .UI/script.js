@@ -1,4 +1,4 @@
-var user ='Ivan Ivanov';
+var user = 'Ivan Ivanov';
 var tagsList = ["Полезно знать", "Финансы", "Политика", "Спорт", "Развлечения"];
 var articles = [
     {
@@ -188,17 +188,20 @@ var articleControl = (function () {
 
     function filterByParam(arts, filterConfig) {
 
-        if (filterConfig.filterType == "Author") {
+        if (filterConfig.filterType = "None") {
+            return arts;
+        }
+        else if (filterConfig.filterType == "Author") {
             return arts.filter(function (article) {
                 return (article.author == filterConfig.param);
             });
         }
-        if (filterConfig.filterType == "Date") {
+        else if (filterConfig.filterType == "Date") {
             return arts.filter(function (article) {
                 return (article.createdAt == filterConfig.param);
             });
         }
-        if (filterConfig.filterType == "Tag") {
+        else if (filterConfig.filterType == "Tag") {
             return arts.filter(function (article) {
                 return (article.tags.indexOf(filterConfig.param) != -1);
             });
@@ -244,8 +247,10 @@ var articleControl = (function () {
 
     function getArticles(skip, top, filterConfig) {
 
-        var result;
-        result = filterByParam(articles, filterConfig);
+        var result = JSON.parse(JSON.stringify(articles));
+        if (filterConfig != undefined)
+            result = filterByParam(result, filterConfig);
+        // else result = articles;
         result = sortByDate(result);
         result.splice(0, skip);
         result.splice(top, Number.MAX_VALUE);
@@ -332,6 +337,11 @@ var articleControl = (function () {
         return false;
     }
 
+
+    function getArticlesCount() {
+        return articles.length;
+    }
+
     return {
         addTag: addTag,
         removeTag: removeTag,
@@ -340,6 +350,7 @@ var articleControl = (function () {
         addArticle: addArticle,
         editArticle: editArticle,
         removeArticle: removeArticle,
+        getArticlesCount: getArticlesCount
     };
 
 })();
@@ -364,6 +375,12 @@ var domFunctions = (function () {
         }
     }
 
+    function renderArticles(artArray) {
+        for (var i = 0; i < artArray.length; i++) {
+            newsField.appendChild(convertToBox(artArray[i]));
+        }
+    }
+
     function addNewsBox(article) {
         if (!articleControl.addArticle(article)) return false;
         newsField.appendChild(convertToBox(articleControl.getArticle(article.id)));
@@ -382,90 +399,166 @@ var domFunctions = (function () {
         return true;
     }
 
+    function clearNewsField() {
+        newsField.innerHTML = '';
+    }
+
     return {
         newsFirstLoad: newsFirstLoad,
+        renderArticles: renderArticles,
         addNewsBox: addNewsBox,
         editNewsBox: editNewsBox,
-        removeNewsBox: removeNewsBox
+        removeNewsBox: removeNewsBox,
+        clearNewsField: clearNewsField
     };
 
 })();
-document.getElementById('welcome').innerHTML="Hello, "+user;
+document.getElementById('welcome').innerHTML = "Hello, " + user;
 
 
-domFunctions.newsFirstLoad();
-
-domFunctions.addNewsBox({
-    id: "ADDED1",
-    title: "ADDED1",
-    summary: "ADDED1",
-    createdAt: new Date(),
-    author: "ADDED1",
-    content: "ADDED1",
-    tags: ["Полезно знать"]
-});
-domFunctions.addNewsBox({
-    id: "ADDED2",
-    title: "ADDED2",
-    summary: "ADDED2",
-    createdAt: new Date(),
-    author: "ADDED2",
-    content: "ADDED2",
-    tags: ["Полезно знать"]
-});
-
-for (var i = 5; i < 15; i++) {
-    domFunctions.removeNewsBox(i.toString());
-}
-domFunctions.editNewsBox('2', {author: "ANONYMOUS", summary: "THIS WAS EDITED"});
+// domFunctions.newsFirstLoad();
+//
+// domFunctions.addNewsBox({
+//     id: "ADDED1",
+//     title: "ADDED1",
+//     summary: "ADDED1",
+//     createdAt: new Date(),
+//     author: "ADDED1",
+//     content: "ADDED1",
+//     tags: ["Полезно знать"]
+// });
+// domFunctions.addNewsBox({
+//     id: "ADDED2",
+//     title: "ADDED2",
+//     summary: "ADDED2",
+//     createdAt: new Date(),
+//     author: "ADDED2",
+//     content: "ADDED2",
+//     tags: ["Полезно знать"]
+// });
+//
+// for (var i = 5; i < 15; i++) {
+//     domFunctions.removeNewsBox(i.toString());
+// }
+// domFunctions.editNewsBox('2', {author: "ANONYMOUS", summary: "THIS WAS EDITED"});
 ////////////////////////////////////////////////////////////////////////
 
-console.log("NORMAL TESTS:");
-console.log("Get first 5 articles, filter: Tag, Спорт");
-var sorted = articleControl.getArticles(0, 5, {filterType: "Tag", param: "Спорт"});
-for (var i = 0; i < sorted.length; i++) {
-    console.log(sorted[i])
-}
 
-console.log("Adding article:");
-console.log(articleControl.addArticle({
-    id: "ADD",
-    title: "Test",
-    summary: "Summary of article",
-    createdAt: new Date(),
-    author: "User",
-    content: "Sample text",
-    tags: ["Полезно знать"]
-}));
-console.log(articleControl.getArticle("ADD"));
+//
+// var pagination = (function () {
+//     var TOTAL; // всего статей
+//     var PER_PAGE = 3; // статей на 1-ой странице
+//     var CURRENT_PAGE = 1; // текущая страница
+//     var SHOW_MORE_BUTTON;
+//     var SHOW_MORE_CALLBACK; // функция, которую вызывать, когда произошел клик по кнопке
+//
+//     /*
+//      Total: Всего статей в ArticleModel. (Надо будет еще учесть, что total меняется при применении фильтров)
+//      showMoreCb: функция, которую надо вызвать при клике на кнопку "Показать Еще"
+//      */
+//     function init(total, showMoreCb) {
+//         TOTAL = total;
+//         SHOW_MORE_CALLBACK = showMoreCb;
+//         SHOW_MORE_BUTTON = document.getElementById('test-pagination');
+//         SHOW_MORE_BUTTON.addEventListener('click', handleShowMoreClick)
+//
+//         /* Не показывать кнопку если статей нет */
+//         if (getTotalPages() <= CURRENT_PAGE) {
+//             hideShowMoreButton();
+//         }
+//
+//         /* Вернуть skip, top для начальной отрисовки статей */
+//         return getParams();
+//     }
+//
+//     function handleShowMoreClick() {
+//         var paginationParams = nextPage();
+//         SHOW_MORE_CALLBACK(paginationParams.skip, paginationParams.top);
+//     }
+//
+//     function getTotalPages() {
+//         return Math.ceil(TOTAL / PER_PAGE);
+//     }
+//
+//     function nextPage() {
+//         CURRENT_PAGE++;
+//         if (getTotalPages() <= CURRENT_PAGE) {
+//             hideShowMoreButton();
+//         }
+//
+//         return getParams();
+//     }
+//
+//     function getParams() {
+//         return {
+//             top: PER_PAGE,
+//             skip: (CURRENT_PAGE - 1) * PER_PAGE
+//         };
+//     }
+//
+//     function hideShowMoreButton() {
+//         SHOW_MORE_BUTTON.hidden = true;
+//     }
+//
+//     return {
+//         init: init
+//     }
+//
+// }());
+//
+// pagination.init(articles.length,domFunctions.newsFirstLoad());
 
-console.log("Removing 2 article:");
-console.log(articleControl.removeArticle('2'));
-for (var i = 0; i < 3; i++) {
-    console.log(articles[i]);
-}
 
-console.log("Editing 1 article:");
-console.log(articleControl.editArticle('1', {author: "А.П. Сидоров", summary: "Все очень плохо", content: "Сахар подорожал"}));
-console.log(articleControl.getArticle(1));
+////////////////////////////////////////////////////////////////////////
+//
+// console.log("NORMAL TESTS:");
+// console.log("Get first 5 articles, filter: Tag, Спорт");
+// var sorted = articleControl.getArticles(0, 5, {filterType: "Tag", param: "Спорт"});
+// for (var i = 0; i < sorted.length; i++) {
+//     console.log(sorted[i])
+// }
+//
+// console.log("Adding article:");
+// console.log(articleControl.addArticle({
+//     id: "ADD",
+//     title: "Test",
+//     summary: "Summary of article",
+//     createdAt: new Date(),
+//     author: "User",
+//     content: "Sample text",
+//     tags: ["Полезно знать"]
+// }));
+// console.log(articleControl.getArticle("ADD"));
+//
+// console.log("Removing 2 article:");
+// console.log(articleControl.removeArticle('2'));
+// for (var i = 0; i < 3; i++) {
+//     console.log(articles[i]);
+// }
+//
+// console.log("Editing 1 article:");
+// console.log(articleControl.editArticle('1', {author: "А.П. Сидоров", summary: "Все очень плохо", content: "Сахар подорожал"}));
+// console.log(articleControl.getArticle(1));
+//
+// console.log("Add tag for ADD article:");
+// console.log(articleControl.addTag("ADD", "Спорт"));
+// console.log(articleControl.getArticle("ADD").tags);
+//
+// console.log("Remove tag from ADD article:");
+// console.log(articleControl.removeTag("ADD", "Полезно знать"));
+// console.log(articleControl.getArticle("ADD").tags);
+//
+// console.log("NON VALID TESTS:");
+//
+// console.log("addTag(ADD,NewTag)")
+// console.log(articleControl.addTag("ADD", "NewTag"));
+//
+// console.log("Try to edit with too long title");
+// console.log(articleControl.editArticle('1', {title: "aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa"}));
+//
+// console.log("Try to add bad article");
+// console.log(articleControl.addArticle({
+//     id: "Only id"
+// }));
 
-console.log("Add tag for ADD article:");
-console.log(articleControl.addTag("ADD", "Спорт"));
-console.log(articleControl.getArticle("ADD").tags);
 
-console.log("Remove tag from ADD article:");
-console.log(articleControl.removeTag("ADD", "Полезно знать"));
-console.log(articleControl.getArticle("ADD").tags);
-
-console.log("NON VALID TESTS:");
-
-console.log("addTag(ADD,NewTag)")
-console.log(articleControl.addTag("ADD", "NewTag"));
-
-console.log("Try to edit with too long title");
-console.log(articleControl.editArticle('1', {title: "aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa"}));
-
-console.log("Try to add bad article");
-console.log(articleControl.addArticle({
-    id: "Only id"
-}));
