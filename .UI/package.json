@@ -1,0 +1,23 @@
+{
+  "name": "c",
+  "version": "0.0.1",
+  "description": "TASK 7",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.15.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrey980620/UP-4term.git"
+  },
+  "author": "andrey980620",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andrey980620/UP-4term/issues"
+  },
+  "homepage": "https://github.com/andrey980620/UP-4term#readme"
+}
