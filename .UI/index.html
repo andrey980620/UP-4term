@@ -13,19 +13,30 @@
     <div id="login-button" class="loginButton"></div>
 
 </div>
-
+<div id="popup"></div>
 <div id="wrapper" class="wrapper">
     <div class="content" id="content">
         <div class="action-centre">
-            <div class="button-news-manage" style="background-image: url('buttons//save.png');"></div>
-            <div class="button-news-manage" style="background-image: url('buttons//edit.png');"></div>
-            <div class="button-news-manage" style="background-image: url('buttons//delete.png');"></div>
-            <div class="infoBox"></div>
+            <div class="button-news-manage" id="news-add"
+                 style="background-image: url('buttons//add.png'); display: block;"></div>
+            <div class="button-news-manage" id="news-edit" style="background-image: url('buttons//edit.png');"></div>
+            <div class="button-news-manage" id="news-delete"
+                 style="background-image: url('buttons//delete.png');"></div>
+            <div class="button-news-manage" id="news-save" style="background-image: url('buttons//save.png');"></div>
+            <!--<div class="infoBox"></div>-->
+            <div class="filter-bar">
+                <form name="filter">
+                    <div>Фильтр по дате от: <input id="date-from" type="date">
+                    </div>
+                    <div>Фильтр по автору:<input id="author" type="text">
+                    </div>
+                    <input name="submit" type="button" value="Применить">
+                </form>
+            </div>
         </div>
 
         <div id="news-field" style="width: 75%; background-color: #2d2d39; text-align:center;">
         </div>
-        <!--<div class="full" id="full-view"></div>-->
 
         <div style="width: 70%;height: 200px;position: relative;">
             <div id="test-pagination" class="nextPage"></div>
@@ -50,25 +61,28 @@
             <input class="login-input" type="text" placeholder="Логин">
             <input class="pass-input" type="password" placeholder="Пароль">
         </div>
-        <button class="login-window-enter-button" ><a href="#">Войти</a></button>
+        <button class="login-window-enter-button"><a href="#">Войти</a></button>
     </div>
 
-    <div id="full-view" class="login-window">
+    <div id="full-view" class="full-view">
         <div class="date-full"></div>
         <div class="topic-full"></div>
-        <div class="summary-full"></div>
+        <div class="content-full"></div>
         <div class="author-full"></div>
     </div>
 
-    <div id="full-edit" class="login-window">
+    <div id="full-edit" class="full-view">
         <div class="date-full"></div>
-        <input class="topic-full"/>
-        <input class="summary-full"/>
+        <textarea class="topic-full" placeholder="Заголовок"></textarea>
+        <textarea class="summary-full" placeholder="Краткая информация"></textarea>
+        <textarea class="content-full" placeholder="Информация"></textarea>
         <div class="author-full"></div>
     </div>
 
 </div>
+
 <script src="script.js"></script>
 <script src="clickHandler.js"></script>
+
 </body>
 </html>

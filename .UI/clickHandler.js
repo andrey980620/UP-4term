@@ -1,31 +1,100 @@
 //github: alexey-kozlenkov/clean_code
+"use strict";
+var newsAdd = document.getElementById("news-add");
+var newsEdit = document.getElementById("news-edit");
+var newsDelete = document.getElementById("news-delete");
+var newsSave = document.getElementById("news-save");
 
-var content = document.getElementById("content");
 var wrapper = document.getElementById("wrapper");
+var popup = document.getElementById("popup");
 var newsParent = document.getElementById("news-field");
 var loginButton = document.getElementById("login-button");
-var fullView = document.getElementById("full-view");
-var loginWindow;
+var loginWindow = document.getElementById("login-window");
+
+
+function clearPopups() {
+    popup.innerHTML = "";
+    newsEdit.style.display = "none";
+    newsDelete.style.display = "none";
+    newsSave.style.display = "none";
+}
+
+newsAdd.addEventListener("click", fAdd);
+newsEdit.addEventListener("click", fEdit);
+newsDelete.addEventListener("click", fDelete);
+newsSave.addEventListener("click", fSave)
+
+
+var form = document.forms.filter;
+var submitButton = form.elements.submit;
+submitButton.addEventListener('click', handleSubmitClick);
+
+
+function handleSubmitClick() {
+    dom.clearNewsField();
+    var dateFilter = new Date(document.getElementById("date-from").value);
+    var authorFilter = document.getElementById("author").value;
+    //console.log(dateFilter);
+   // console.log(dateFilter.getTime());
+    renderWithFilter({_date: dateFilter, author:authorFilter});
+}
+
+function fAdd() {
+    clearPopups();
+
+    var temp = document.getElementById("full-edit").cloneNode(true);
+
+    temp.id = articlesData.length + 1;
+    popup.appendChild(temp);
+    newsSave.style.display = "block";
+
+}
+function fEdit() {
+    newsEdit.style.display = "none";
+    newsSave.style.display = "block";
+
+    var news = popup.firstElementChild;
+    var id = news.id;
+    var template = dom.convertToEditView(articleControl.getArticle(id));
+    popup.innerHTML = "";
+    popup.appendChild(template);
+}
+
+function fSave() {
+    var news = popup.firstElementChild;
+    console.log(articleControl.addArticle({
+        id: news.id,
+        title: news.querySelector('.topic-full').value,
+        summary: news.querySelector('.summary-full').value,
+        createdAt: new Date(),
+        author: user,
+        content: news.querySelector('.content-full').value,
+        tags: ["hi"]
+    }));
+
+    newsSave.style.display = "none";
+    clearPopups();
+    reloadPagination();
+}
+
+function fDelete() {
+    var news = popup.firstElementChild;
+    articleControl.removeArticle(news.id);
+
+    clearPopups();
+    reloadPagination();
+}
 
 
 newsParent.addEventListener("click", function () {
+    clearPopups();
     var idFullView = (recognizeClicked(event.target).id);
-    //template = document.getElementById("full-view");
-    alert("id = " + idFullView);
-    template = convertToFullView(articleControl.getArticle(idFullView));
-    wrapper.appendChild(template);
+    //alert("id = " + idFullView);
+    var template = dom.convertToFullView(articleControl.getArticle(idFullView));
+    popup.appendChild(template);
+    newsEdit.style.display = "block";
+    newsDelete.style.display = "block";
 });
-
-function convertToFullView(article) {
-    var fullView = fullView.cloneNode(true);
-
-    fullView.id = article.id;
-    fullView.querySelector('.date-full').innerHTML = article.createdAt;
-    fullView.querySelector('.topic-full').innerHTML = article.title;
-    fullView.querySelector('.summary-full').innerHTML = article.summary;
-    fullView.querySelector('.author-full').innerHTML = article.author;
-    return fullView;
-}
 
 
 function recognizeClicked(node) {
@@ -40,6 +109,7 @@ var pagination = (function () {
     var CURRENT_PAGE = 1; // текущая страница
     var SHOW_MORE_BUTTON;
     var SHOW_MORE_CALLBACK; // функция, которую вызывать, когда произошел клик по кнопке
+
 
     function init(total, showMoreCb) {
         TOTAL = total;
@@ -57,7 +127,7 @@ var pagination = (function () {
     function handleShowMoreClick() {
         var paginationParams = nextPage();
         SHOW_MORE_CALLBACK(paginationParams.skip, paginationParams.top);
-        alert("should work but doesnt")
+        //alert("should work but doesnt")
 
     }
 
@@ -91,18 +161,29 @@ var pagination = (function () {
 
 }());
 
+function reloadPagination() {
+    newsField.innerHTML = "";
+    pagination.init(articles.length, renderer);
+}
 
-var total = articles.length;
-var Pagination = pagination.init(total, renderer);
+reloadPagination();
 
-function renderer(skip, top) {
-    var arts = articleControl.getArticles(skip, top);
-    domFunctions.renderArticles(arts);
-// {filterType:"Author", param:"Иван Иванов"}
+function renderer(skip, top, filterConfig) {
+    var arts = articleControl.getArticles(skip, top, filterConfig);
+    dom.renderArticles(arts);
+}
+function renderWithFilter(filterConfig) {
+
+    var total = articleControl.getArticlesCount(filterConfig);
+    var paginationParams = pagination.init(total, function (skip, top) {
+        renderer(skip, top, filterConfig);
+    });
+
+   // renderer(paginationParams.skip, paginationParams.top, filterConfig);
 }
 
 loginButton.addEventListener("click", function () {
-    loginWindow = document.getElementById("login-window");
+
     wrapper.appendChild(loginWindow);
     var enterButton = loginWindow.querySelector('.login-window-enter-button');
     enterButton.addEventListener("click", enterButtonClicked);

@@ -1,5 +1,16 @@
 var user = 'Ivan Ivanov';
-var tagsList = ["Полезно знать", "Финансы", "Политика", "Спорт", "Развлечения"];
+var tagsList = ["Полезно знать", "Финансы", "Политика", "Спорт", "Развлечения", "hi"];
+var articlesData;
+const options = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    weekday: 'long',
+    timezone: 'UTC',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric'
+};
 var articles = [
     {
         id: '1',
@@ -177,7 +188,7 @@ var articles = [
         title: 'news20',
         summary: 'Минское «Динамо» обыграло ярославский «Локомотив» в четвертом матче первого раунда плей-офф КХЛ — 4:2',
         createdAt: new Date('2020-02-27T23:00:00'),
-        author: 'Иванов Иван',
+        author: 'Иван',
         content: 'Гости создали больше опасных моментов и в два раза перебросали минчан, но «зубры» на этот раз очень эффективно использовали свои моменты.',
         tags: [tagsList[3], tagsList[4]]
     }
@@ -187,26 +198,30 @@ var articleControl = (function () {
 
 
     function filterByParam(arts, filterConfig) {
+        var temp;
+        var temp2;
+        if (filterConfig._date != "Invalid Date" && filterConfig._date != undefined) {
+            temp = arts.filter(function (article) {
+                var k = article.createdAt.getTime() - filterConfig._date.getTime();
+                console.log(k);
+                return k > 0;
+            });
+        } else temp = arts;
+        console.log(temp);
 
-        if (filterConfig.filterType = "None") {
-            return arts;
-        }
-        else if (filterConfig.filterType == "Author") {
-            return arts.filter(function (article) {
-                return (article.author == filterConfig.param);
+        if (filterConfig.author != undefined && filterConfig.author != "") {
+             temp2 = temp.filter(function (article) {
+                return (article.author == filterConfig.author);
             });
-        }
-        else if (filterConfig.filterType == "Date") {
-            return arts.filter(function (article) {
-                return (article.createdAt == filterConfig.param);
-            });
-        }
-        else if (filterConfig.filterType == "Tag") {
-            return arts.filter(function (article) {
-                return (article.tags.indexOf(filterConfig.param) != -1);
-            });
-        }
-        else return arts;
+        } else  temp2 = temp;
+
+        //  if (filterConfig.tag !=null) {
+        //      arts= arts.filter(function (article) {
+        //         return (article.tags.indexOf(filterConfig.param) != -1);
+        //     });
+        // }
+        //console.log(temp2);
+        return temp2;
 
     }
 
@@ -248,12 +263,15 @@ var articleControl = (function () {
     function getArticles(skip, top, filterConfig) {
 
         var result = JSON.parse(JSON.stringify(articles));
+        var temp;
         if (filterConfig != undefined)
-            result = filterByParam(result, filterConfig);
-        // else result = articles;
-        result = sortByDate(result);
+            temp = filterByParam(result, filterConfig);
+        else temp = result;
+
+        result = sortByDate(temp);
         result.splice(0, skip);
         result.splice(top, Number.MAX_VALUE);
+        console.log(result);
         return result;
     }
 
@@ -297,8 +315,12 @@ var articleControl = (function () {
     function addArticle(article) {
         if (validateArticle(article)) {
             for (var i = 0; i < articles.length; i++)
-                if (articles[i].id == article.id) return false;
+                if (articles[i].id == article.id) {
+                    editArticle(article.id, article);
+                    return true;
+                }
             articles.splice(0, 0, article);
+            fillArticlesStorage();
             return true;
         } else return false;
     }
@@ -320,6 +342,8 @@ var articleControl = (function () {
                     temp.content = article.content;
                 if (validateArticle(temp)) {
                     articles[i] = temp;
+                    console.log("editing id " + id);
+                    fillArticlesStorage();
                     return true;
                 } else return false;
             }
@@ -331,6 +355,7 @@ var articleControl = (function () {
         for (var i = 0; i < articles.length; i++) {
             if (articles[i].id == id) {
                 articles.splice(i, 1);
+                fillArticlesStorage();
                 return true;
             }
         }
@@ -338,9 +363,35 @@ var articleControl = (function () {
     }
 
 
-    function getArticlesCount() {
-        return articles.length;
+    function getArticlesCount(filterConfig) {
+        return filterByParam(articles, filterConfig).length;
     }
+
+
+    function fillArticlesStorage() {
+        localStorage.clear('articlesKey');
+        localStorage.setItem('articlesKey', JSON.stringify(articles));
+    }
+
+    articlesData = JSON.parse(localStorage.getItem('articlesKey'));
+    if (!articlesData)
+        fillArticlesStorage();
+    else {
+        articles = articlesData;
+        articles.forEach(function (currentElement) {
+            currentElement.createdAt = new Date(currentElement.createdAt);
+        });
+    }
+
+    window.beforeUnload = function () {
+        localStorage.setItem('articlesKey', JSON.stringify(articles));
+    };
+
+    function getCurrentLength() {
+        articlesData = JSON.parse(localStorage.getItem('articlesKey'));
+        return articlesData.length;
+    }
+
 
     return {
         addTag: addTag,
@@ -350,19 +401,21 @@ var articleControl = (function () {
         addArticle: addArticle,
         editArticle: editArticle,
         removeArticle: removeArticle,
-        getArticlesCount: getArticlesCount
+        getArticlesCount: getArticlesCount,
+        getCurrentLength: getCurrentLength
     };
 
 })();
 ////        Задание 5       ////////////////////////////////////////////
 var newsField = document.getElementById('news-field');
 var newsTemplate = document.getElementById('news-box');
-var domFunctions = (function () {
+
+var dom = (function () {
     function convertToBox(article) {
         var newsBox = newsTemplate.cloneNode(true);
 
         newsBox.id = article.id;
-        newsBox.querySelector('.date').innerHTML = article.createdAt;
+        newsBox.querySelector('.date').innerHTML = article.createdAt.toLocaleString("en-US", options);
         newsBox.querySelector('.topic').innerHTML = article.title;
         newsBox.querySelector('.summary').innerHTML = article.summary;
         newsBox.querySelector('.author').innerHTML = article.author;
@@ -403,22 +456,50 @@ var domFunctions = (function () {
         newsField.innerHTML = '';
     }
 
+
+    function convertToFullView(article) {
+        var fullView = document.getElementById("full-view").cloneNode(true);
+
+        fullView.id = article.id;
+        fullView.querySelector('.date-full').innerHTML = article.createdAt.toLocaleString("en-US", options);
+        fullView.querySelector('.topic-full').innerHTML = article.title;
+        fullView.querySelector('.content-full').innerHTML = article.content;
+        fullView.querySelector('.author-full').innerHTML = article.author;
+        return fullView;
+    }
+
+    function convertToEditView(article) {
+        var fullView = document.getElementById("full-edit").cloneNode(true);
+
+        fullView.id = article.id;
+        fullView.querySelector('.date-full').innerHTML = article.createdAt.toLocaleString("en-US", options);
+        fullView.querySelector('.topic-full').value = article.title;
+        fullView.querySelector('.summary-full').value = article.summary;
+        fullView.querySelector('.content-full').value = article.content;
+        fullView.querySelector('.author-full').innerHTML = article.author;
+        return fullView;
+    }
+
+
     return {
+        convertToBox: convertToBox,
         newsFirstLoad: newsFirstLoad,
         renderArticles: renderArticles,
         addNewsBox: addNewsBox,
         editNewsBox: editNewsBox,
         removeNewsBox: removeNewsBox,
-        clearNewsField: clearNewsField
+        clearNewsField: clearNewsField,
+        convertToFullView: convertToFullView,
+        convertToEditView: convertToEditView
     };
 
 })();
 document.getElementById('welcome').innerHTML = "Hello, " + user;
 
 
-// domFunctions.newsFirstLoad();
+// dom.newsFirstLoad();
 //
-// domFunctions.addNewsBox({
+// dom.addNewsBox({
 //     id: "ADDED1",
 //     title: "ADDED1",
 //     summary: "ADDED1",
@@ -427,7 +508,7 @@ document.getElementById('welcome').innerHTML = "Hello, " + user;
 //     content: "ADDED1",
 //     tags: ["Полезно знать"]
 // });
-// domFunctions.addNewsBox({
+// dom.addNewsBox({
 //     id: "ADDED2",
 //     title: "ADDED2",
 //     summary: "ADDED2",
@@ -438,9 +519,9 @@ document.getElementById('welcome').innerHTML = "Hello, " + user;
 // });
 //
 // for (var i = 5; i < 15; i++) {
-//     domFunctions.removeNewsBox(i.toString());
+//     dom.removeNewsBox(i.toString());
 // }
-// domFunctions.editNewsBox('2', {author: "ANONYMOUS", summary: "THIS WAS EDITED"});
+// dom.editNewsBox('2', {author: "ANONYMOUS", summary: "THIS WAS EDITED"});
 ////////////////////////////////////////////////////////////////////////
 
 
@@ -506,7 +587,7 @@ document.getElementById('welcome').innerHTML = "Hello, " + user;
 //
 // }());
 //
-// pagination.init(articles.length,domFunctions.newsFirstLoad());
+// pagination.init(articles.length,dom.newsFirstLoad());
 
 
 ////////////////////////////////////////////////////////////////////////

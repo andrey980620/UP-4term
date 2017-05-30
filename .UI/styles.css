@@ -1,9 +1,3 @@
-<
-style type
-
-=
-"text/css"
->
 body {
     margin: 0;
 }
@@ -152,6 +146,7 @@ body {
 }
 
 .button-news-manage {
+    display: none;
     position: relative;
     margin: auto;
     margin-top: 20px;
@@ -161,8 +156,8 @@ body {
 
 .nextPage {
     position: absolute;
-    width: 76px;
-    height: 53px;
+    width: 53px;
+    height: 76px;
     background-image: url("buttons//next.png");
     right: 10px;
     top: 20px;
@@ -274,19 +269,21 @@ body {
 .full-view {
     position: fixed;
     z-index: 5;
-    width: 45%;
-    height: 540px;
+    width: 65%;
+    height: 50%;
     text-align: center;
     margin: 60px auto 25px;
-    border-radius: 16px;
+    border-radius: 12px;
     background-color: #ffffff;
     display: inline-block;
-    align-self: center;
+    align-self: flex-start;
+    left: 5%;
+    padding: 20px;
 }
 
 .date-full {
     width: 100%;
-    height: 55%;
+    height: 5%;
     font-size: 15px;
 }
 
@@ -309,13 +306,26 @@ body {
     text-align: left;
     font-size: 18px;
     font-style: italic;
-    overflow: hidden;
+    overflow-y: scroll;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     width: 100%;
-    height: 23%;
+    height: 10%;
+    margin-top: 2%;
+}
+.content-full {
+    text-align: left;
+    font-size: 18px;
+    font-style: italic;
+    overflow-y: scroll;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    width: 100%;
+    height: 55%;
     margin-top: 2%;
 }
 
@@ -323,11 +333,20 @@ body {
     position: absolute;
     bottom: 0px;
     width: 100%;
-    text-align: right;
+    text-align: left;
     font-style: italic;
     font-weight: bold;
 }
 
-<
-/
-style >
+.layer{
+    display:block;
+    position: fixed;
+    width:100%;
+    height: 100%;
+    z-index: 10;
+    background-color: rgba(0,0,0,255);
+}
+
+.filter-bar {
+    margin: 8px;
+}
